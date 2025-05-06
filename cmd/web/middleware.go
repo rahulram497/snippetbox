@@ -24,13 +24,14 @@ func commonHeaders(next http.Handler) http.Handler {
 func (app *application) logRequest(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var (
-			ip     = r.RemoteAddr
-			proto  = r.Proto
-			method = r.Method
-			uri    = r.URL.RequestURI()
+			ip         = r.RemoteAddr
+			proto      = r.Proto
+			method     = r.Method
+			uri        = r.URL.RequestURI()
+			user_agent = r.UserAgent()
 		)
 
-		app.logger.Info("received request", "ip", ip, "proto", proto, "method", method, "uri", uri)
+		app.logger.Info("received request", "ip", ip, "proto", proto, "method", method, "uri", uri, "user_agent", user_agent)
 
 		next.ServeHTTP(w, r)
 	})
